@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.graphics.Palette;
 import android.text.Html;
@@ -46,6 +47,7 @@ public class ArticleDetailFragment extends Fragment implements
     private static final String TAG = "ArticleDetailFragment";
 
     public static final String ARG_ITEM_ID = "item_id";
+    public static final String ARG_ITEM_POS = "item_pos";
     private static final float PARALLAX_FACTOR = 1.25f;
 
     private Cursor mCursor;
@@ -69,7 +71,7 @@ public class ArticleDetailFragment extends Fragment implements
     // Most time functions can only handle 1902 - 2037
     private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2,1,1);
 
-    private static int mArticlePosition;
+    private int mArticlePosition;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -77,12 +79,15 @@ public class ArticleDetailFragment extends Fragment implements
     public ArticleDetailFragment() {
     }
 
-    public static ArticleDetailFragment newInstance(long itemId, int articlePosition) {
+
+
+    public static ArticleDetailFragment newInstance(long itemId, int position) {
         Bundle arguments = new Bundle();
         arguments.putLong(ARG_ITEM_ID, itemId);
+        arguments.putInt(ARG_ITEM_POS, position);
         ArticleDetailFragment fragment = new ArticleDetailFragment();
         fragment.setArguments(arguments);
-        mArticlePosition = articlePosition;
+        //mArticlePosition = articlePosition;
         return fragment;
     }
 
@@ -92,6 +97,10 @@ public class ArticleDetailFragment extends Fragment implements
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             mItemId = getArguments().getLong(ARG_ITEM_ID);
+        }
+
+        if (getArguments().containsKey(ARG_ITEM_POS)) {
+            mArticlePosition = getArguments().getInt(ARG_ITEM_POS);
         }
 
         mIsCard = getResources().getBoolean(R.bool.detail_is_card);
@@ -128,12 +137,14 @@ public class ArticleDetailFragment extends Fragment implements
             }
         });
 
+        //((CollapsingToolbarLayout)mRootView.findViewById(R.id.collapsing_toolbar_layout)).setTitle("Screen Title");
+        //CollapsingToolbarLayout c = mRootView.findViewById(R.id.collapsing_toolbar_layout);
         mScrollView = (ObservableScrollView) mRootView.findViewById(R.id.scrollview);
         mScrollView.setCallbacks(new ObservableScrollView.Callbacks() {
             @Override
             public void onScrollChanged() {
                 mScrollY = mScrollView.getScrollY();
-                getActivityCast().onUpButtonFloorChanged(mItemId, ArticleDetailFragment.this);
+                //getActivityCast().onUpButtonFloorChanged(mItemId, ArticleDetailFragment.this);
                 mPhotoContainerView.setTranslationY((int) (mScrollY - mScrollY / PARALLAX_FACTOR));
                 updateStatusBar();
             }
@@ -163,6 +174,8 @@ public class ArticleDetailFragment extends Fragment implements
                 .inflateTransition(R.transition.move));
         return mRootView;
     }
+
+
 
     private void updateStatusBar() {
         int color = 0;
@@ -323,4 +336,7 @@ public class ArticleDetailFragment extends Fragment implements
                     }
                 });
     }
+
+
+
 }

@@ -757,13 +757,14 @@ id action_mode_bar
 id action_mode_bar_stub
 id action_mode_close_button
 id action_text
-id action_up
 id actions
 id activity_chooser_view_content
 id add
 id alertTitle
 id all
 id always
+id app_bar
+id app_bar_layout
 id article_body
 id article_byline
 id article_subtitle
@@ -782,6 +783,7 @@ id chronometer
 id clip_horizontal
 id clip_vertical
 id collapseActionView
+id collapsing_toolbar_layout
 id contentPanel
 id custom
 id customPanel
@@ -904,7 +906,6 @@ id touch_outside
 id transition_current_scene
 id transition_scene_layoutid_cache
 id up
-id up_container
 id useLogo
 id view_offset_helper
 id visible

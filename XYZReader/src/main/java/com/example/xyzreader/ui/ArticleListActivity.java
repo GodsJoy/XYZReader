@@ -24,6 +24,7 @@ import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.widget.ImageView;
@@ -59,6 +60,8 @@ public class ArticleListActivity extends AppCompatActivity implements
     // Most time functions can only handle 1902 - 2037
     private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2,1,1);
 
+    private static final String REENTER_VAL = "reenter";
+    private boolean reenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,9 +77,39 @@ public class ArticleListActivity extends AppCompatActivity implements
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         getLoaderManager().initLoader(0, null, this);
 
+        Log.d("BUndleREEEnter", (savedInstanceState != null)+"");
         if (savedInstanceState == null) {
+            reenter = false;
             refresh();
         }
+        else {
+            reenter = savedInstanceState.getBoolean(REENTER_VAL);
+        }
+        /*if(!reenter){
+            Log.d("REEEnter", reenter+"");
+            animateViewsIn();
+        }*/
+        animateViewsIn();
+        //reenter = true;
+    }
+
+    @Override
+    public void onActivityReenter(int resultCode, Intent data) {
+        super.onActivityReenter(resultCode, data);
+
+        postponeEnterTransition();
+        mRecyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                mRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
+                // TODO: figure out why it is necessary to request layout here in order to get a smooth transition.
+                mRecyclerView.requestLayout();
+                startPostponedEnterTransition();
+                return true;
+            }
+        });
+        Log.d("REEEnterV", "got here");
+
     }
 
     private void animateViewsIn() {
@@ -84,7 +117,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         int count = root.getChildCount();
         float offset = getResources().getDimensionPixelSize(R.dimen.offset_y);
         Interpolator interpolator =
-                AnimationUtils.loadInterpolator(this, android.R.interpolator.linear_out_slow_in);
+                AnimationUtils.loadInterpolator(this, android.R.interpolator.linear);
 
         // loop over the children setting an increasing translation y but the same animation
         // duration + interpolation
@@ -152,7 +185,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         StaggeredGridLayoutManager sglm =
                 new StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(sglm);
-        //animateViewsIn();
+
     }
 
     @Override
@@ -267,5 +300,12 @@ public class ArticleListActivity extends AppCompatActivity implements
             titleView = (TextView) view.findViewById(R.id.article_title);
             subtitleView = (TextView) view.findViewById(R.id.article_subtitle);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(REENTER_VAL, true);
+        Log.d("SAVEDREEEnter", "got here");
     }
 }
