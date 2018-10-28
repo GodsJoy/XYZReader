@@ -1,0 +1,22 @@
+<resources>
+    <!-- detail -->
+    <dimen name="detail_title_text_size">32sp</dimen>
+    <dimen name="detail_body_text_size">22sp</dimen>
+    <dimen name="list_title_text_size">20sp</dimen>
+    <dimen name="list_subtitle_text_size">16sp</dimen>
+    <item name="detail_body_line_spacing_multiplier" format="float" type="fraction">1.25</item>
+
+    <dimen name="fab_elevation">2dp</dimen>
+    <dimen name="fab_press_translation_z">6dp</dimen>
+    <dimen name="fab_margin">24dp</dimen>
+
+    <dimen name="article_cardview_height">280dp</dimen>
+    <dimen name="article_cardview_elevation">6dp</dimen>
+    <dimen name="article_cardview_marginTop">8dp</dimen>
+    <dimen name="article_cardview_marginBottom">8dp</dimen>
+    <dimen name="article_cardview_marginLeft">4dp</dimen>
+    <dimen name="article_cardview_marginRight">4dp</dimen>
+
+    <dimen name="offset_y">300dp</dimen>
+
+</resources>
