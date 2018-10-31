@@ -137,23 +137,20 @@ public class ArticleDetailFragment extends Fragment implements
             }
         });
 
-        //((CollapsingToolbarLayout)mRootView.findViewById(R.id.collapsing_toolbar_layout)).setTitle("Screen Title");
-        //CollapsingToolbarLayout c = mRootView.findViewById(R.id.collapsing_toolbar_layout);
+
         mScrollView = (ObservableScrollView) mRootView.findViewById(R.id.scrollview);
         mScrollView.setCallbacks(new ObservableScrollView.Callbacks() {
             @Override
             public void onScrollChanged() {
                 mScrollY = mScrollView.getScrollY();
-                //getActivityCast().onUpButtonFloorChanged(mItemId, ArticleDetailFragment.this);
-                mPhotoContainerView.setTranslationY((int) (mScrollY - mScrollY / PARALLAX_FACTOR));
+                getActivityCast().onUpButtonFloorChanged(mItemId, ArticleDetailFragment.this);
+                //mPhotoContainerView.setTranslationY((int) (mScrollY - mScrollY / PARALLAX_FACTOR));
                 updateStatusBar();
             }
         });
 
-        mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
-        mPhotoView.setTransitionName("photo"+mArticlePosition);
-        //Log.d("FragShared", mPhotoView.getTransitionName());
-        mPhotoContainerView = mRootView.findViewById(R.id.photo_container);
+        //mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
+        //mPhotoContainerView = mRootView.findViewById(R.id.photo_container);
 
         mStatusBarColorDrawable = new ColorDrawable(0);
 
@@ -169,9 +166,7 @@ public class ArticleDetailFragment extends Fragment implements
 
         bindViews();
         updateStatusBar();
-        //loading photo using coordinated motion
-        getActivityCast().getWindow().setSharedElementEnterTransition(TransitionInflater.from(getActivityCast())
-                .inflateTransition(R.transition.move));
+
         return mRootView;
     }
 
@@ -179,7 +174,7 @@ public class ArticleDetailFragment extends Fragment implements
 
     private void updateStatusBar() {
         int color = 0;
-        if (mPhotoView != null && mTopInset != 0 && mScrollY > 0) {
+        /*if (mPhotoView != null && mTopInset != 0 && mScrollY > 0) {
             float f = progress(mScrollY,
                     mStatusBarFullOpacityBottom - mTopInset * 3,
                     mStatusBarFullOpacityBottom - mTopInset);
@@ -187,7 +182,7 @@ public class ArticleDetailFragment extends Fragment implements
                     (int) (Color.red(mMutedColor) * 0.9),
                     (int) (Color.green(mMutedColor) * 0.9),
                     (int) (Color.blue(mMutedColor) * 0.9));
-        }
+        }*/
         mStatusBarColorDrawable.setColor(color);
         mDrawInsetsFrameLayout.setInsetBackground(mStatusBarColorDrawable);
     }
@@ -255,7 +250,7 @@ public class ArticleDetailFragment extends Fragment implements
 
             }
             bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
-            ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
+            /*ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                     .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
                         @Override
                         public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
@@ -263,7 +258,7 @@ public class ArticleDetailFragment extends Fragment implements
                             if (bitmap != null) {
                                 Palette p = Palette.generate(bitmap, 12);
                                 mMutedColor = p.getDarkMutedColor(0xFF333333);
-                                mPhotoView.setImageBitmap(imageContainer.getBitmap());
+                                //mPhotoView.setImageBitmap(imageContainer.getBitmap());
                                 mRootView.findViewById(R.id.meta_bar)
                                         .setBackgroundColor(mMutedColor);
                                 updateStatusBar();
@@ -274,7 +269,7 @@ public class ArticleDetailFragment extends Fragment implements
                         public void onErrorResponse(VolleyError volleyError) {
 
                         }
-                    });
+                    });*/
         } else {
             mRootView.setVisibility(View.GONE);
             titleView.setText("N/A");
@@ -305,7 +300,6 @@ public class ArticleDetailFragment extends Fragment implements
         }
 
         bindViews();
-        scheduleStartPostponedTransition();
     }
 
     @Override
@@ -324,19 +318,5 @@ public class ArticleDetailFragment extends Fragment implements
                 ? (int) mPhotoContainerView.getTranslationY() + mPhotoView.getHeight() - mScrollY
                 : mPhotoView.getHeight() - mScrollY;
     }
-
-    private void scheduleStartPostponedTransition() {
-        mPhotoView.getViewTreeObserver().addOnPreDrawListener(
-                new ViewTreeObserver.OnPreDrawListener() {
-                    @Override
-                    public boolean onPreDraw() {
-                        mPhotoView.getViewTreeObserver().removeOnPreDrawListener(this);
-                        getActivity().startPostponedEnterTransition();
-                        return true;
-                    }
-                });
-    }
-
-
 
 }

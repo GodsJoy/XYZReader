@@ -1,5 +1,5 @@
 <com.example.xyzreader.ui.DrawInsetsFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/draw_insets_frame_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -13,12 +13,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <FrameLayout
+            <!--<FrameLayout
                 android:id="@+id/photo_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/photo_placeholder">
-                <!--suppress AndroidLintContentDescription -->
+                &lt;!&ndash;suppress AndroidLintContentDescription &ndash;&gt;
                 <ImageView
                     android:id="@+id/photo"
                     android:layout_width="match_parent"
@@ -26,12 +26,12 @@
                     android:scaleType="centerCrop"
                     android:layout_gravity="center" />
 
-                <!--<View
+                &lt;!&ndash;<View
                     android:layout_width="match_parent"
                     android:layout_height="112dp"
-                    android:background="@drawable/photo_background_protection" />-->
+                    android:background="@drawable/photo_background_protection" />&ndash;&gt;
 
-            </FrameLayout>
+            </FrameLayout>-->
 
             <com.example.xyzreader.ui.MaxWidthLinearLayout
                 android:orientation="vertical"
@@ -40,8 +40,7 @@
                 android:layout_gravity="center_horizontal"
                 android:maxWidth="@dimen/detail_card_max_width"
                 android:background="#fff"
-                android:elevation="2dp"
-                android:layout_marginTop="@dimen/detail_card_top_margin">
+                android:elevation="2dp">
 
                 <LinearLayout
                     android:id="@+id/meta_bar"

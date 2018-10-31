@@ -77,7 +77,6 @@ public class ArticleListActivity extends AppCompatActivity implements
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         getLoaderManager().initLoader(0, null, this);
 
-        Log.d("BUndleREEEnter", (savedInstanceState != null)+"");
         if (savedInstanceState == null) {
             reenter = false;
             refresh();
@@ -85,30 +84,25 @@ public class ArticleListActivity extends AppCompatActivity implements
         else {
             reenter = savedInstanceState.getBoolean(REENTER_VAL);
         }
-        /*if(!reenter){
-            Log.d("REEEnter", reenter+"");
-            animateViewsIn();
-        }*/
+        //animation for list item
         animateViewsIn();
-        //reenter = true;
     }
 
     @Override
     public void onActivityReenter(int resultCode, Intent data) {
         super.onActivityReenter(resultCode, data);
 
+        //Handle reenter transition. Postpone transition till recyclerview is loaded
         postponeEnterTransition();
         mRecyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
                 mRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
-                // TODO: figure out why it is necessary to request layout here in order to get a smooth transition.
                 mRecyclerView.requestLayout();
                 startPostponedEnterTransition();
                 return true;
             }
         });
-        Log.d("REEEnterV", "got here");
 
     }
 
@@ -215,11 +209,8 @@ public class ArticleListActivity extends AppCompatActivity implements
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("ArticleList", "uri:"+ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition())).toString());
-                    Log.d("ArticleList", "getItemId:"+getItemId(vh.getAdapterPosition())+" pos: "+vh.getAdapterPosition());
                     Intent intent = new Intent(Intent.ACTION_VIEW,
                             ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition())));
-                    Log.d("ListShared", vh.thumbnailView.getTransitionName());
                     Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(
                             ArticleListActivity.this, vh.thumbnailView, vh.thumbnailView.getTransitionName()).toBundle();
                     startActivity(intent, bundle);
