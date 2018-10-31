@@ -88,6 +88,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         animateViewsIn();
     }
 
+    //got idea from https://www.androiddesignpatterns.com/2015/03/activity-postponed-shared-element-transitions-part3b.html
     @Override
     public void onActivityReenter(int resultCode, Intent data) {
         super.onActivityReenter(resultCode, data);
@@ -106,6 +107,7 @@ public class ArticleListActivity extends AppCompatActivity implements
 
     }
 
+    //reused from material design lesson
     private void animateViewsIn() {
         ViewGroup root = (ViewGroup) findViewById(R.id.swipe_refresh_layout);
         int count = root.getChildCount();

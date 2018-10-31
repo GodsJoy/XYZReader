@@ -206,6 +206,7 @@ public class ArticleDetailActivity extends AppCompatActivity
     }
 
     //function that starts transition once data is ready
+    ////got idea from https://www.androiddesignpatterns.com/2015/03/activity-postponed-shared-element-transitions-part3b.html
     private void scheduleStartPostponedTransition() {
         img.getViewTreeObserver().addOnPreDrawListener(
                 new ViewTreeObserver.OnPreDrawListener() {
